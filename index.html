@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Amma ❤️</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(to right, #ff9a9e, #fad0c4);
+    color: #333;
+    text-align: center;
+}
+
+.page {
+    display: none;
+    height: 100vh;
+    overflow-y: auto; /* allow scroll */
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    opacity: 0;
+    transform: scale(0.9);
+    transition: all 1s ease;
+    padding: 20px;
+}
+
+.active {
+    display: flex;
+    opacity: 1;
+    transform: scale(1);
+}
+
+button {
+    padding: 12px 22px;
+    border: none;
+    border-radius: 25px;
+    background: #ff4e50;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+/* CINEMATIC SLIDER (FADE + KEN BURNS) */
+.slider {
+    width: 90vw;
+    max-width: 420px;
+    height: 72vh;
+    margin: auto;
+    position: relative;
+    overflow: hidden;
+}
+
+.slider img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 20px;
+    opacity: 0;
+    transform: scale(1);
+    transition: opacity 1.6s ease-in-out;
+}
+
+/* active image fades in + slow zoom */
+.slider img.activeSlide {
+    opacity: 1;
+    z-index: 1;
+    animation: kenburns 6s ease-in-out forwards;
+}
+
+@keyframes kenburns {
+    0% { transform: scale(1) translate(0,0); }
+    50% { transform: scale(1.06) translate(-1%, -1%); }
+    100% { transform: scale(1.12) translate(1%, 1%); }
+}
+
+/* caption */
+.caption {
+    position: absolute;
+    bottom: 12px;
+    left: 12px;
+    right: 12px;
+    color: #fff;
+    background: rgba(0,0,0,0.35);
+    padding: 8px 10px;
+    border-radius: 12px;
+    font-size: 14px;
+    opacity: 0;
+    transition: opacity 1s ease;
+}
+
+.caption.show {
+    opacity: 1;
+}
+
+/* Button inside slider */
+.inside-btn {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    padding: 8px 14px;
+    font-size: 14px;
+    border-radius: 20px;
+    background: #ff4e50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.letter {
+    max-width: 650px;
+    max-height: 50vh; /* limit height */
+    overflow-y: auto; /* scroll inside letter */
+    padding: 25px;
+    background: rgba(255,255,255,0.95);
+    border-radius: 20px;
+    font-size: 19px;
+    line-height: 1.8;
+}
+
+.cursor {
+    display: inline-block;
+    width: 2px;
+    background: black;
+    animation: blink 1s infinite;
+}
+@keyframes blink {0%,50%,100%{opacity:1}25%,75%{opacity:0}}
+
+.glow {
+    font-size: 44px;
+    color: #fff;
+    text-shadow: 0 0 25px #ff4081, 0 0 60px #ff4081;
+    animation: pulse 2s infinite;
+}
+@keyframes pulse {0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
+
+.balloon {
+    position: absolute;
+    bottom: -100px;
+    width: 40px;
+    height: 50px;
+    border-radius: 50%;
+    animation: floatUp linear infinite;
+}
+@keyframes floatUp {
+    0% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(-120vh); opacity: 0; }
+}
+
+.confetti {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    animation: fall linear infinite;
+}
+@keyframes fall {
+    0% { transform: translateY(-10vh); }
+    100% { transform: translateY(110vh); }
+}
+
+.heart {
+    font-size: 60px;
+    animation: beat 1.2s infinite;
+}
+@keyframes beat {
+    0%,100%{transform:scale(1)}
+    50%{transform:scale(1.3)}
+}
+</style>
+</head>
+
+<body>
+
+<audio id="bgMusic" loop>
+    <source src="song.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="voice">
+    <source src="voice.mp3" type="audio/mpeg">
+</audio>
+
+<!-- PAGE 1 -->
+<div class="page active" id="page1">
+    <h1>🎉 Happy Birthday Amma 🎉</h1>
+    <p>Something I always wanted to tell you...</p>
+    <button onclick="startExperience()">Start ❤️</button>
+</div>
+
+<!-- PAGE 2 -->
+<div class="page" id="page2">
+    <h2>I never said this enough...</h2>
+    <button onclick="nextPage(3)">Next</button>
+</div>
+
+<!-- PAGE 3 SLIDER -->
+<div class="page" id="page3">
+    <h2>Our Beautiful Memories 📸</h2>
+
+    <div class="slider">
+        <img src="photo1.jpeg" class="activeSlide">
+        <img src="photo2.jpeg">
+        <img src="photo3.jpeg">
+        <img src="photo4.jpeg">
+        <img src="photo5.jpeg">
+        <img src="photo6.jpeg">
+
+        <div id="caption" class="caption"></div>
+    </div>
+            <button class="inside-btn" onclick="nextPage(4)">Next ➜</button>
+
+</div>
+
+<!-- PAGE 4 LETTER -->
+<div class="page" id="page4">
+    <h2>From My Heart 💌</h2>
+    <div class="letter">
+        <span id="typedText"></span><span class="cursor"></span>
+    </div>
+    <button onclick="startTyping()">Read ❤️</button>
+    <button onclick="nextPage(5)">Next</button>
+</div>
+
+<!-- PAGE 5 -->
+<div class="page" id="page5">
+    <div class="heart">❤️</div>
+    <h1 class="glow">I Love You Amma</h1>
+    <p>You are my everything</p>
+</div>
+
+<script>
+const text = `అమ్మ… ఈ పదానికి చాలా మంది చాలా అర్థాలు చెబుతారు.
+కానీ నాకు తెలిసిన అర్థం  ఒక అరుదైన మహిమ.
+
+ఎందుకంటే… మా అమ్మ లాంటి వ్యక్తి రావాలి అంటే
+రోజూ జరిగే చిన్న చిన్న అద్భుతాలు సరిపోవు,
+అదికంటే గొప్ప అద్భుత శక్తి కావాలి.ఆ దేవుడైన మళ్ళీ ఇంకో జనమ ఎత్తాలి అంటే మా అమ్మ లాంటి వ్యక్తి కోసమే వెతుకుతాడు. ఎందుకు అంటే మా అమ్మ ,అమ్మ కాన ముందర ఒక గొప్ప మనిషి, one of a kind...single piece, beutiful there is and with an addictive attractive kindest soul.నాకు ఎప్పుడైనా నేను స్పెషల్ కాదు అనిపిస్తే,
+వెంటనే ఒక విషయం గుర్తుకొస్తుంది 
+ఇలాంటి వ్యక్తికి పుట్టాను అంటే
+నేను కూడా స్పెషల్ నే అని.She need not try to be perfect, she is the unique one and perfect one in her own way and whatever she does.మీ జీవితంలో ఉన్న వాళ్లు  అమ్మమ్మ, తాతయ్య…
+ఎన్ని తప్పులు చేసినా,
+ఒక్క విషయం వల్ల అన్నీ మరిచిపోయి
+ఎంతో పుణ్యం, కీర్తి సంపాదించుకునారు 
+all because of a single tag ... Parents of sobha rani.ఆ పేరు కూడా దైవ నిర్ణయం కాకపోతే ఏంటి ఈ మహారాణి కి పేరులో రాణి లేకపోతే ఎలా అని పాటించాడు ఆ దేవుడు. ఈ రాణి కి సరిపోయే రాజ్యం సంపాదించమని ఈ సైనికుడిని పాటించాడు. Please take care of yourself till you get to that kingdom. ఎవరిని అయిన ఇట్టే ఆకట్టుకునే గుణం, సౌందర్యం, ఇట్టె కట్టిపడేసే మాట తీరు అందం కూడా అసూయ పడేలాంటి సౌందర్యం,గొప్ప మేధావులతో పోటీ పడే తెలివి…ఆ కృష్ణుడు సైతం గీతబోధ చేయనవసరం లేని వ్యక్తిత్వం.You are my biggest lottery of the past. I know you don't deserve the people you have I wish if I had a boon, I would ask for you to have the life you deserve. I will always be angry with God in this, for not giving you the best life you deserve. But I promise I will be the son you deserve . I am proud of you. This birthday you turn to sweet 16, you get all the strength in the universe to enjoy life in the best way possible. No matter what calendar says you are always a kid at heart. We may become old but you are an eternal youth.You are my lucky charm... Your presence itself casts the magic in people's lives.you are one of the greatest god creations. I don't know what good we did to have you in our lives. To the strongest yet kindest person... I didn’t always say this...\nbut everything I am today is because of you.\n\nEvery sacrifice you made,\nevery sleepless night,\nevery silent prayer for me...\n\nI may not have noticed it then,\nbut I feel it now.\n\nYou are my strength.\nYou are my home.\n\nAnd I promise...\nI will make you proud one day.\n\nI love you more than words can ever express. ❤️Once again many many happy returns of the day\n\n`;
+
+let i = 0;
+function startTyping() {
+    document.getElementById('voice').play();
+    typeWriter();
+}
+
+function typeWriter() {
+    if (i < text.length) {
+        document.getElementById("typedText").innerHTML += text.charAt(i);
+        i++;
+        setTimeout(typeWriter, 55);
+    }
+}
+
+function startExperience() {
+    document.getElementById('bgMusic').play();
+    createBalloons();
+    createConfetti();
+    nextPage(2);
+}
+
+function nextPage(pageNumber) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page' + pageNumber).classList.add('active');
+}
+
+/* CINEMATIC SLIDER CONTROL */
+const captions = [
+    "Your smile is my peace ❤️",
+    "Every day with you is a blessing",
+    "My strongest support always",
+    "Memories I will cherish forever",
+    "You are my home",
+    "My Amma, my everything ❤️"
+];
+
+let slideIndex = 0;
+const slideDelay = 5000; // slower for cinematic feel
+
+setInterval(() => {
+    let slides = document.querySelectorAll('.slider img');
+    let cap = document.getElementById('caption');
+    if (slides.length === 0) return;
+
+    slides.forEach(s => s.classList.remove('activeSlide'));
+
+    slideIndex = (slideIndex + 1) % slides.length;
+    slides[slideIndex].classList.add('activeSlide');
+
+    // caption fade
+    if (cap) {
+        cap.classList.remove('show');
+        setTimeout(() => {
+            cap.innerText = captions[slideIndex];
+            cap.classList.add('show');
+        }, 300);
+    }
+}, slideDelay);
+
+function createBalloons() {
+    for (let i = 0; i < 15; i++) {
+        let b = document.createElement('div');
+        b.className = 'balloon';
+        b.style.left = Math.random() * 100 + 'vw';
+        b.style.background = `hsl(${Math.random()*360},70%,60%)`;
+        b.style.animationDuration = (6 + Math.random()*4) + 's';
+        document.body.appendChild(b);
+    }
+}
+
+function createConfetti() {
+    for (let i = 0; i < 50; i++) {
+        let c = document.createElement('div');
+        c.className = 'confetti';
+        c.style.left = Math.random() * 100 + 'vw';
+        c.style.background = `hsl(${Math.random()*360},100%,50%)`;
+        c.style.animationDuration = (3 + Math.random()*3) + 's';
+        document.body.appendChild(c);
+    }
+}
+</script>
+
+</body>
+</html>
